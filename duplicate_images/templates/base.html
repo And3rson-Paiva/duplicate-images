@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Evidência</title>
+</head>
+<body>
+    <!--Header -->
+    <header>
+        <section class="hero is-info has-background-link-dark">
+            <div class="hero-body">
+                <div class="columns">
+                    <div class="column">
+                        <p class="title">
+                            <img src="static/img/mini_logo_hapvida.png">
+                        </p>
+                        <p class="subtitle">
+                            Faz bem para você!
+                        </p>
+                    </div>
+                    <div class="column is-8">
+                        <p class="title">
+                            Envio de Imagens
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </header>
+    <!--End Header -->
+
+    <!--Main -->
+    <main>
+        <div class="container is-max-widescreen">
+            <form enctype="multipart/form-data" method="POST" action="submit">
+                <div class="columns">
+                    <div class="column" name="data">
+                        <div class="notification is-primary has-background-info-dark">
+                            <div class="field">
+                                <label class="label">Name</label>
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="e.g Alex Smith">
+                                </div>
+                                <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control">
+                                    <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com">
+                                </div>
+                            </div>
+                        </div>
+                        <div id=file class="file is-danger has-name is-boxed">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="files[]" multiple="multiple">
+                                <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </span>
+                                <span class="file-label">
+                                    Choose a file…
+                                </span>
+                                </span>
+                                <span class="file-name">
+                                    No file uploaded
+                                </span>
+                            </label>
+                        </div>
+                        <div class="buttons">
+                            <button class="button is-danger">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    <!--End Main -->
+
+    <!--Footer -->
+    <footer>
+        <section class="hero">
+            <div class="hero-body">
+                <div class="content has-text-centered">
+                    <p>Hapvida Saúde (ANS 36.825-3) - Todos os direitos reservados
+                        <br>Políticas de Privacidade 
+                    </p>
+                    <p>
+                        <img src="static/img/logo_ANS.png">
+                    </p>
+                    <p>
+                        <img src="static/img/ans_selo_hapvida.png">
+                    </p>
+                </div>
+            </div>
+        </section>
+    </footer>
+</body>
+<script>
+  const fileInput = document.querySelector('#file input[type=file]');
+  fileInput.onchange = () => {
+    if (fileInput.files.length > 0) {
+      const fileName = document.querySelector('#file .file-name');
+      fileName.textContent = fileInput.files[0].name;
+
+    }
+  }
+</script>
+</html>
