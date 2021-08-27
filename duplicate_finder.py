@@ -46,6 +46,8 @@ from PIL import Image, ExifTags
 import pymongo
 from termcolor import cprint
 
+from PIL.ImageOps import mirror
+
 
 @contextmanager
 def connect_to_db(db_conn_string='./db'):
@@ -64,7 +66,8 @@ def connect_to_db(db_conn_string='./db'):
         if not os.path.isdir(db_conn_string):
             os.makedirs(db_conn_string)
 
-        p = Popen(['mongod', '--dbpath', db_conn_string], stdout=PIPE, stderr=PIPE)
+        p = Popen(['mongod', '--dbpath', db_conn_string],
+                  stdout=PIPE, stderr=PIPE)
 
         try:
             p.wait(timeout=2)
@@ -99,7 +102,7 @@ def get_image_files(path):
     """
     def is_image(file_name):
         # List mime types fully supported by Pillow
-        full_supported_formats = ['gif', 'jp2', 'jpeg', 'pcx', 'png', 'tiff', 'x-ms-bmp',
+        full_supported_formats = ['gif', 'jp2', 'jpg', 'jpeg', 'pcx', 'png', 'tiff', 'x-ms-bmp',
                                   'x-portable-pixmap', 'x-xbitmap']
         try:
             mime = magic.from_file(file_name, mime=True)
@@ -124,15 +127,25 @@ def hash_file(file):
         image_size = get_image_size(img)
         capture_time = get_capture_time(img)
 
-        # hash the image 4 times and rotate it by 90 degrees each time
-        for angle in [ 0, 90, 180, 270 ]:
-            if angle > 0:
-                turned_img = img.rotate(angle, expand=True)
-            else:
-                turned_img = img
-            hashes.append(str(imagehash.phash(turned_img)))
+        # Add hash com e sem espelhamento
+        mirrored_image = mirror(img)
+        hashes.append(str(imagehash.phash(mirrored_image)))
+        hashes.append(str(imagehash.phash(img)))
 
         hashes = ''.join(sorted(hashes))
+
+        # hash the image 4 times and rotate it by 90 degrees each time
+        # for angle in [0, 90, 180, 270]:
+
+        # if angle > 0:
+        #    turned_img = img.rotate(angle, expand=True)
+        # else:
+        #    turned_img = mirror(img)
+        #    hashes.append(str(imagehash.phash(turned_img)))
+        #    turned_img = img
+        # hashes.append(str(imagehash.phash(turned_img)))
+
+        # hashes = ''.join(sorted(hashes))
 
         cprint("\tHashed {}".format(file), "blue")
         return file, hashes, file_size, image_size, capture_time
@@ -233,7 +246,7 @@ def find(db, match_time=False):
             }
         }
     },
-    {
+        {
         "$match": {
             "total": {"$gt": 1}
         }
@@ -271,6 +284,7 @@ def delete_picture(file_name, db, trash="./Trash/"):
 
 def display_duplicates(duplicates, db, trash="./Trash/"):
     from werkzeug.routing import PathConverter
+
     class EverythingConverter(PathConverter):
         regex = '.*?'
 
