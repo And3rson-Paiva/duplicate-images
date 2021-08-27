@@ -134,19 +134,6 @@ def hash_file(file):
 
         hashes = ''.join(sorted(hashes))
 
-        # hash the image 4 times and rotate it by 90 degrees each time
-        # for angle in [0, 90, 180, 270]:
-
-        # if angle > 0:
-        #    turned_img = img.rotate(angle, expand=True)
-        # else:
-        #    turned_img = mirror(img)
-        #    hashes.append(str(imagehash.phash(turned_img)))
-        #    turned_img = img
-        # hashes.append(str(imagehash.phash(turned_img)))
-
-        # hashes = ''.join(sorted(hashes))
-
         cprint("\tHashed {}".format(file), "blue")
         return file, hashes, file_size, image_size, capture_time
     except OSError:
