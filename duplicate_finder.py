@@ -290,12 +290,12 @@ def display_duplicates(duplicates, db, trash="./Trash/"):
         # Generate all of the HTML files
         chunk_size = 25
         for i, dups in enumerate(chunked(duplicates, chunk_size)):
-            with open('{}/{}.html'.format(folder, i), 'w') as f:
+            with open(f'{folder}/{i}0.html', 'w') as f:
                 f.write(render(dups,
                                current=i,
                                total=math.ceil(len(duplicates) / chunk_size)))
 
-        webbrowser.open("file://{}/{}".format(folder, '0.html'))
+        webbrowser.open(f"file://{folder}/{'0.html'}")
 
         @app.route('/picture/<everything:file_name>', methods=['DELETE'])
         def delete_picture_(file_name, trash=trash):
