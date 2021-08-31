@@ -129,8 +129,8 @@ def hash_file(file):
 
         # Add hash com e sem espelhamento
         mirrored_image = mirror(img)
-        hashes.append(str(imagehash.phash(mirrored_image)))
         hashes.append(str(imagehash.phash(img)))
+        hashes.append(str(imagehash.phash(mirrored_image)))
 
         hashes = ''.join(sorted(hashes))
 
